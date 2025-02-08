@@ -21,9 +21,6 @@ const addPlace = async (req, res) => {
 const placebyid = async (req, res) => {
   try {
     const { id } = req.params;
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid place ID' });
-    }
     const place = await Place.findById(id);
 
     if (!place) {
@@ -42,14 +39,25 @@ const placebyid = async (req, res) => {
 // Like a place
 const likePlace = async (req, res) => {
   try {
+    const { uid } = req.body; // Get Firebase UID from frontend
     const place = await Place.findById(req.params.id);
-    if (!place) return res.status(404).json({ message: 'Place not found' });
+    
+    if (!place) {
+      return res.status(404).json({ success: false, message: "Place not found" });
+    }
 
-    place.likes += 1;
+    // Check if user has already liked the place
+    if (place.likes.includes(uid)) {
+      return res.status(400).json({ success: false, message: "User already liked this place" });
+    }
+
+    place.likes.push(uid);
     await place.save();
-    res.json({ message: 'Liked successfully', likes: place.likes });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+
+    res.json({ success: true, likesCount: place.likes.length });
+  }
+  catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

@@ -15,6 +15,6 @@ router.post('/like/:id', likePlace);
 // Comment on a place
 router.post('/comment/:id', commentOnPlace);
 
-router.get('/places:id', placebyid);
+router.get('/:id', placebyid);
 
 module.exports = router;
