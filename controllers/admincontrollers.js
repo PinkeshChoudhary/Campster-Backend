@@ -1,5 +1,5 @@
 const Place = require('../models/sitePlace');
-const Admin = require('../models/userSchema');
+const Admin = require('../models/adminSchema');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 

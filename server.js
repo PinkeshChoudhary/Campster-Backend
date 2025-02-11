@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 const placeRoutes = require('./Routes/placesRoute');
 const adminRoutes = require('./Routes/adminRoute');
 const campRoutes = require('./Routes/campRoutes');
-
+const userRoutes = require('./Routes/user.js');
 
 
 dotenv.config();
@@ -23,6 +23,7 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.use('/api', userRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/camps', campRoutes);

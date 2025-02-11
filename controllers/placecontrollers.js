@@ -1,16 +1,28 @@
-const Place = require('../models/sitePlace');
+const CampingExperience = require('../models/sitePlace');
 
 // Add a new place
 const addPlace = async (req, res) => {
   try {
       const imageUrls = req.files.map(file => file.path);  // Get image URLs from Cloudinary
-    const newPlace = new Place({
-      name: req.body.name,
-      description: req.body.description,
+      console.info("images", imageUrls)
+    const newExperience = new CampingExperience({
+      destination: req.body.destination,
+      date: req.body.date,
+      duration: req.body.duration,
+      groupSize: req.body.groupSize,
+      tentCondition: req.body.tentCondition,
+      comfort: req.body.comfort,
+      rating: req.body.rating,
+      amenities: req.body.amenities ? req.body.amenities.split(",") : [],
+      wildlife: req.body.wildlife,
+      bestPart: req.body.bestPart,
+      challenges: req.body.challenges,
+      tips: req.body.tips,
       images: imageUrls,
       approved: false,  // Initially not approved
     });
-    await newPlace.save();
+    console.info("newExperience", newExperience);
+    await newExperience.save();
     res.status(201).json({ message: 'Place submitted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error submitting place' });
@@ -21,10 +33,7 @@ const addPlace = async (req, res) => {
 const placebyid = async (req, res) => {
   try {
     const { id } = req.params;
-    if (mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: 'Invalid place ID' });
-    }
-    const place = await Place.findById(id);
+    const place = await CampingExperience.findById(id);
 
     if (!place) {
       return res.status(404).json({ message: 'Place not found' });
@@ -38,44 +47,14 @@ const placebyid = async (req, res) => {
 };
 
 
-
-// Like a place
-const likePlace = async (req, res) => {
-  try {
-    const place = await Place.findById(req.params.id);
-    if (!place) return res.status(404).json({ message: 'Place not found' });
-
-    place.likes += 1;
-    await place.save();
-    res.json({ message: 'Liked successfully', likes: place.likes });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// Comment on a place
-const commentOnPlace = async (req, res) => {
-  try {
-    const { user, text } = req.body;
-    const place = await Place.findById(req.params.id);
-    if (!place) return res.status(404).json({ message: 'Place not found' });
-
-    place.comments.push({ user, text });
-    await place.save();
-    res.json({ message: 'Comment added successfully', comments: place.comments });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 // List approved places
 const listPlaces = async (req, res) => {
   try {
-    const places = await Place.find({ approved: true });
+    const places = await CampingExperience.find({ approved: true });
     res.status(200).json({places});
   } catch (error) {
     res.status(500).json({ error: 'Error fetching places' });
   }
 };
 
-module.exports = { addPlace, listPlaces,  likePlace, commentOnPlace, placebyid };
+module.exports = { addPlace, listPlaces, placebyid };
