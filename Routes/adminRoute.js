@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { approvePlace, getPendingPlaces, rejectPlace, loginAdmin } = require('../controllers/admincontrollers');
+const { approvePlace, getPendingPlaces, rejectPlace, loginAdmin, getAllBookings } = require('../controllers/admincontrollers');
 const { protectAdmin } = require('../middleware/auth');
 const webpush = require("../config/webPushConfig");
 
@@ -17,6 +17,9 @@ router.post('/approve-place/:id', protectAdmin, approvePlace);
 
 // Route to reject (delete) a place
 router.delete('/reject-place/:id', protectAdmin,  rejectPlace);
+
+ // Admin fetch all bookings
+ router.get("/allbookings", getAllBookings);
 
 // Save the admin's subscription when they log in
 router.post("/subscribe", (req, res) => {
