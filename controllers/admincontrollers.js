@@ -1,5 +1,6 @@
 const Place = require('../models/sitePlace');
 const Admin = require('../models/adminSchema');
+const Booking = require("../models/bookingSchema");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
@@ -38,10 +39,8 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-module.exports = { loginAdmin };
 
-
-// ✅ Get All Pending Places
+//  Get All Pending Places
 const getPendingPlaces = async (req, res) => {
   try {
     const places = await Place.find({ approved: false });
@@ -52,7 +51,7 @@ const getPendingPlaces = async (req, res) => {
   }
 };
 
-// ✅ Approve a Place
+//  Approve a Place
 const approvePlace = async (req, res) => {
   try {
     const placeId = req.params.id;
@@ -72,7 +71,7 @@ const approvePlace = async (req, res) => {
   }
 };
 
-// ✅ Reject (Delete) a Place
+//  Reject (Delete) a Place
 const rejectPlace = async (req, res) => {
   try {
     const placeId = req.params.id;
@@ -89,5 +88,14 @@ const rejectPlace = async (req, res) => {
   }
 };
 
-// ✅ Correct Export
-module.exports = { loginAdmin, getPendingPlaces, approvePlace, rejectPlace };
+// Get all confirmed and pending bookings
+const getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ status: { $in: ["Pending", "Confirmed"] } }).populate("tentId");
+
+        res.status(200).json({ success: true, bookings });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+}
+module.exports = { loginAdmin, getPendingPlaces, approvePlace, rejectPlace , getAllBookings};
