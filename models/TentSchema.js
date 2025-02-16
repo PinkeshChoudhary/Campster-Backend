@@ -6,5 +6,4 @@ const tentSchema = new mongoose.Schema({
   quantity: { type: Number, required: true, min: 0 },
   availability: [{ fromDate: Date, toDate: Date }],
 });
-
-module.exports = mongoose.model("Tent", tentSchema);
+module.exports = mongoose.models.Tent || mongoose.model("Tent", tentSchema);

@@ -29,6 +29,7 @@ router.post("/subscribe", (req, res) => {
 
 // Send a notification to the admin
 router.post("/notify", async (req, res) => {
+    console.info()
     if (!adminSubscription) {
         return res.status(400).json({ error: "Admin is not subscribed!" });
     }
