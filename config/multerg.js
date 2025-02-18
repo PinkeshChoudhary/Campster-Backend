@@ -23,11 +23,15 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'campster-places',  // Folder to store the images
     allowed_formats: ['jpeg', 'jpg', 'png', 'gif'],
+    resource_type: 'auto', // Automatically detects images/videos
   },
 });
 
 // Set up multer with the Cloudinary storage configuration
-const upload = multer({ storage: storage });
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 50 * 1024 * 1024 } // 50MB file size limit
+ });
 
 // Export the upload function to be used in routes
 module.exports = upload;
