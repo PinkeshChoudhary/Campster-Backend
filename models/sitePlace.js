@@ -62,6 +62,19 @@ const CampingExperienceSchema = new mongoose.Schema({
     type: Boolean, 
     default: false 
   },
+  likes: { type: Number, default: 0 }, // Total like count
+  likedBy: [{ type: String }],// Store Firebase UID of users who liked the place
+  comments: [
+    {
+      user: String, // Store the user name or ID
+      text: String,
+      createdAt: { type: Date, default: Date.now }
+    }
+  ],
+  userId: { 
+    type: String, // Firebase UID for the user who submitted the experience
+    required: true 
+  },
 });
 
 const CampingExperience = mongoose.model("CampingExperience", CampingExperienceSchema);
