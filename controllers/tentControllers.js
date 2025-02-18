@@ -2,25 +2,38 @@ const Tent = require("../models/TentSchema.js");
 
 // Get available tents with correct quantity calculation
 const getAvailableTents = async (req, res) => {
-  const { fromDate, toDate, size, color, quantity } = req.query;
+  const { fromDate, toDate, size, color, quantity = 1 } = req.query; // Default quantity to 1 if not provided
 
   try {
-    // Find all tents matching size & color
+    // Convert dates to Date objects
+    const start = new Date(fromDate);
+    const end = new Date(toDate);
+    if (isNaN(start.getTime()) || isNaN(end.getTime()) || start >= end) {
+      return res.status(400).json({ error: "Invalid date range" });
+    }
+
+    // Find all tents that match size & color
     let tents = await Tent.find({ size, color });
 
-    // Filter tents based on remaining available quantity
+    // Filter available tents
     let availableTents = tents.filter((tent) => {
-      // Calculate booked quantity for the given date range
+      // Sum up the booked quantity for the given date range
       let bookedQuantity = tent.availability.reduce((count, booking) => {
-        if (new Date(fromDate) < booking.toDate && new Date(toDate) > booking.fromDate) {
+        const bookingStart = new Date(booking.fromDate);
+        const bookingEnd = new Date(booking.toDate);
+
+        // Check for overlapping dates
+        if (start < bookingEnd && end > bookingStart) {
           return count + (booking.quantity || 1);
         }
         return count;
       }, 0);
 
-      // Check if the requested quantity can be fulfilled
+      // Calculate remaining tents
       let remainingQuantity = tent.quantity - bookedQuantity;
-      return remainingQuantity >= quantity; // Tent is available if enough quantity remains
+
+      // Tent is available only if the requested quantity can be fulfilled
+      return remainingQuantity >= quantity;
     });
 
     res.json(availableTents);

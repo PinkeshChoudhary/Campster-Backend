@@ -6,7 +6,7 @@ const bookingSchema = new mongoose.Schema({
   fromDate: { type: Date, required: true },
   toDate: { type: Date, required: true },
   quantity: { type: Number, required: true, min: 0 },
-  status: { type: String, enum: ["Pending", "Confirmed", "Cancelled"], default: "Confirmed" },
+  status: { type: String, enum: ["Pending", "Confirmed", "Cancelled", "Completed"], default: "Confirmed" },
 });
 
 module.exports = mongoose.model("Booking", bookingSchema);

@@ -11,6 +11,8 @@ const userRoutes = require("./Routes/user");
 const tentRoutes = require("./Routes/tentRoutes");
 const bookingRoutes = require("./Routes/bookingRoutes");
 const { setSocket } = require("./controllers/bookingControllers"); // Import setSocket
+// require("./jobs/stockRestore");
+
 
 dotenv.config();
 const app = express();

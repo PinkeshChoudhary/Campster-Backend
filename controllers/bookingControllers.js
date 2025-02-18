@@ -19,6 +19,7 @@ const rentTent = async (req, res) => {
       return res.status(400).json({ error: "Quantity must be at least 1" });
     }
 
+    
     if (!mongoose.Types.ObjectId.isValid(tentId)) {
       return res.status(400).json({ error: "Invalid Tent ID" });
     }
@@ -38,7 +39,6 @@ const rentTent = async (req, res) => {
       return res.status(400).json({ error: "Not enough tents available for selected dates" });
     }
 
-    tent.quantity -= quantity;
 
     const booking = new Booking({ userId, tentId, fromDate, toDate, quantity });
     await booking.save();
@@ -56,13 +56,12 @@ const rentTent = async (req, res) => {
         toDate,
       });
     }
-        // Send notification to admin
-      //   await axios.post("http://localhost:5000/api/admin/notify", JSON.stringify({
-      //     message: "New tent booking",
-      //     userId: userId, // Ensure this exists
-      //     tentId: tentId, // Ensure this exists
-      // }), { headers: { "Content-Type": "application/json" } });
-    res.json({ message: `Successfully booked ${quantity} tent(s)`, booking });
+    //     // Send notification to admin
+    //     await axios.post("http://localhost:5000/api/admin/notify", JSON.stringify({
+    //       message: "New tent booking",
+    //   }), { headers: { "Content-Type": "application/json" } });
+    // res.json({ message: `Successfully booked ${quantity} tent(s)`, booking });
+
   } catch (error) {
     console.error("Error booking tent(s):", error);
     res.status(500).json({ error: "Error booking tent(s)" });
@@ -79,7 +78,6 @@ const cancelBooking = async (req, res) => {
     const tent = await Tent.findById(booking.tentId);
     if (!tent) return res.status(404).json({ error: "Tent not found" });
 
-    tent.quantity += booking.quantity;
     tent.availability = tent.availability.filter(avail =>
       !(avail.fromDate.getTime() === booking.fromDate.getTime() &&
         avail.toDate.getTime() === booking.toDate.getTime())
