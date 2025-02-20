@@ -12,7 +12,7 @@ const setSocket = (socketIoInstance) => {
 
 // Rent multiple tents
 const rentTent = async (req, res) => {
-  const { userId, tentId, fromDate, toDate, quantity } = req.body;
+  const { userPhone, userId, tentId, fromDate, toDate, quantity } = req.body;
 
   try {
     if (!quantity || quantity <= 0) {
@@ -40,7 +40,7 @@ const rentTent = async (req, res) => {
     }
 
 
-    const booking = new Booking({ userId, tentId, fromDate, toDate, quantity });
+    const booking = new Booking({ userPhone, userId, tentId, fromDate, toDate, quantity });
     await booking.save();
 
     tent.availability.push({ fromDate, toDate });
@@ -60,7 +60,7 @@ const rentTent = async (req, res) => {
     //     await axios.post("http://localhost:5000/api/admin/notify", JSON.stringify({
     //       message: "New tent booking",
     //   }), { headers: { "Content-Type": "application/json" } });
-    // res.json({ message: `Successfully booked ${quantity} tent(s)`, booking });
+    res.json({ message: `Successfully booked ${quantity} tent(s)`, booking });
 
   } catch (error) {
     console.error("Error booking tent(s):", error);

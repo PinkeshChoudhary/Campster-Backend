@@ -10,6 +10,8 @@ const campRoutes = require("./Routes/campRoutes");
 const userRoutes = require("./Routes/user");
 const tentRoutes = require("./Routes/tentRoutes");
 const bookingRoutes = require("./Routes/bookingRoutes");
+const adminFireRoute = require("./Routes/adminFireRoute");
+
 const { setSocket } = require("./controllers/bookingControllers"); // Import setSocket
 // require("./jobs/stockRestore");
 
@@ -36,6 +38,7 @@ app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST", "PATCH"
 // Routes
 app.use("/api", userRoutes);
 app.use("/api/places", placeRoutes);
+app.use("/api/adminfire", adminFireRoute)
 app.use("/api/admin", adminRoutes);
 app.use("/api/camps", campRoutes);
 app.use("/api/tents", tentRoutes);

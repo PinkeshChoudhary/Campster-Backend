@@ -73,7 +73,7 @@ const CampingExperienceSchema = new mongoose.Schema({
   ],
   userId: { 
     type: String, // Firebase UID for the user who submitted the experience
-    required: true 
+    required: false 
   },
 });
 
