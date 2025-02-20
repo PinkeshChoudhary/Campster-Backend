@@ -10,13 +10,13 @@ let adminSubscription = null; // Store subscription
 router.post('/login', loginAdmin);
 
 // Route to get all unapproved places
-router.get('/pending-places', protectAdmin, getPendingPlaces);
+router.get('/pending-places', getPendingPlaces);
 
 // Route to approve a place
-router.post('/approve-place/:id', protectAdmin, approvePlace);
+router.post('/approve-place/:id', approvePlace);
 
 // Route to reject (delete) a place
-router.delete('/reject-place/:id', protectAdmin,  rejectPlace);
+router.delete('/reject-place/:id',  rejectPlace);
 
  // Admin fetch all bookings
  router.get("/allbookings", getAllBookings);

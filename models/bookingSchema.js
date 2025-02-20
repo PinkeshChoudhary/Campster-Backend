@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
+  userPhone: { type: String, required: true  },
   userId: { type: String, required: true  },
   tentId: { type: mongoose.Schema.Types.ObjectId, ref: "Tent", required: true },
   fromDate: { type: Date, required: true },
