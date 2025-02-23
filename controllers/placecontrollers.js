@@ -1,28 +1,18 @@
-const CampingExperience = require('../models/sitePlace');
+const place = require('../models/sitePlace');
 
 // Add a new place
 const addPlace = async (req, res) => {
   try {
       const imageUrls = req.files.map(file => file.path);  // Get image URLs from Cloudinary
-    const newExperience = new CampingExperience({
+    const newPlace = new place({
       destination: req.body.destination,
-      date: req.body.date,
-      duration: req.body.duration,
-      groupSize: req.body.groupSize,
-      tentCondition: req.body.tentCondition,
-      comfort: req.body.comfort,
-      rating: req.body.rating,
-      amenities: req.body.amenities ? req.body.amenities.split(",") : [],
-      wildlife: req.body.wildlife,
-      bestPart: req.body.bestPart,
-      challenges: req.body.challenges,
-      tips: req.body.tips,
+      description: req.body.description,
+      location: req.body.location,
       images: imageUrls,
-      approved: false,  // Initially not approved
+      approved: true,  // Initially not approved
       userId:req.body.userId,
     });
-
-    await newExperience.save();
+    await newPlace.save();
     res.status(201).json({ message: 'Place submitted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error submitting place' });
@@ -33,13 +23,13 @@ const addPlace = async (req, res) => {
 const placebyid = async (req, res) => {
   try {
     const { id } = req.params;
-    const place = await CampingExperience.findById(id);
+    const Place = await place.findById(id);
 
-    if (!place) {
+    if (!Place) {
       return res.status(404).json({ message: 'Place not found' });
     }
 
-    res.json(place);
+    res.json(Place);
   } catch (error) {
     console.error('Error fetching place:', error);
     res.status(500).json({ message: 'Server error' });
@@ -50,7 +40,7 @@ const placebyid = async (req, res) => {
 // List approved places
 const listPlaces = async (req, res) => {
   try {
-    const places = await CampingExperience.find({ approved: true });
+    const places = await place.find({ approved: true });
     res.status(200).json({places});
   } catch (error) {
     res.status(500).json({ error: 'Error fetching places' });
@@ -65,7 +55,7 @@ const likePlace = async (req, res) => {
   const { userId } = req.body; // Firebase UID from frontend
 
   try {
-    const post = await CampingExperience.findById(placeId);
+    const post = await place.findById(placeId);
     if (!post) return res.status(404).json({ message: "post not found" });
 
     if (post.likedBy.includes(userId)) {
@@ -87,16 +77,16 @@ const likePlace = async (req, res) => {
 const addComment = async (req, res) => {
   try {
     const { user, text } = req.body;
-    const place = await CampingExperience.findById(req.params.id);
+    const Place = await place.findById(req.params.id);
 
-    if (!place) {
+    if (!Place) {
       return res.status(404).json({ message: "Place not found" });
     }
 
-    place.comments.push({ user, text });
-    await place.save();
-
-    res.status(201).json(place.comments);
+    Place.comments.push({ user, text });
+    await Place.save();
+     
+    res.status(201).json(Place.comments);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -105,11 +95,11 @@ const addComment = async (req, res) => {
 // Get all comments for a place
 const getComments = async (req, res) => {
   try {
-    const place = await CampingExperience.findById(req.params.id);
-    if (!place) {
+    const Place = await place.findById(req.params.id);
+    if (!Place) {
       return res.status(404).json({ message: "Place not found" });
     }
-    res.status(200).json(place.comments);
+    res.status(200).json(Place.comments);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -121,7 +111,7 @@ const getPostByUserId = async (req, res) => {
     const { userId } = req.params;
 
     // Find camping experiences where the userId matches
-    const places = await CampingExperience.find({ userId });
+    const places = await place.find({ userId });
 
     if (places.length === 0) {
       return res.status(404).json({ message: "No places found for this user." });
