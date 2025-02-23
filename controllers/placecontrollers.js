@@ -9,7 +9,7 @@ const addPlace = async (req, res) => {
       description: req.body.description,
       location: req.body.location,
       images: imageUrls,
-      approved: true,  // Initially not approved
+      approved: false,  // Initially not approved
       userId:req.body.userId,
     });
     await newPlace.save();
@@ -105,6 +105,19 @@ const getComments = async (req, res) => {
   }
 };
 
+// Get all likes for place
+const getLikes = async (req, res) => {
+  try {
+    const Place = await place.findById(req.params.id);
+    if (!Place) {
+      return res.status(404).json({ message: "Place not found" });
+    }
+    res.status(200).json(Place.likes);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
 // Fetch places by userId
 const getPostByUserId = async (req, res) => {
   try {
@@ -124,4 +137,4 @@ const getPostByUserId = async (req, res) => {
   }
 };
 
-module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId };
+module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes };

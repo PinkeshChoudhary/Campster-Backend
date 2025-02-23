@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { approvePlace, getPendingPlaces, rejectPlace, loginAdmin, getAllBookings } = require('../controllers/admincontrollers');
-const { protectAdmin } = require('../middleware/auth');
+const { approvePlace, getPendingPlaces, rejectPlace, getAllBookings } = require('../controllers/admincontrollers');
 const webpush = require("../config/webPushConfig");
 
 let adminSubscription = null; // Store subscription
 
 
-router.post('/login', loginAdmin);
 
 // Route to get all unapproved places
 router.get('/pending-places', getPendingPlaces);
