@@ -22,7 +22,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'campster-places',  // Folder to store the images
-    allowed_formats: ['jpeg', 'jpg', 'png', 'gif'],
+    allowed_formats: ['jpeg', 'jpg', 'png', 'gif', 'avif'],
     resource_type: 'auto', // Automatically detects images/videos
   },
 });
