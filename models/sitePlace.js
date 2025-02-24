@@ -13,6 +13,10 @@ const placeSchema = new mongoose.Schema({
     type: String, 
     required: true,
   },
+  locationCoordinates: {
+    type: String, 
+    required: true,
+  },
   images: {
     type: [String], 
     required: true,
