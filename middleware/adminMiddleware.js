@@ -10,11 +10,11 @@ const verifyAdmin = async (req, res, next) => {
     }
 
     const admin = await Adminfire.findOne({ uid: userUID });
-    if (!admin) {
-      return res.status(403).json({ message: 'Access denied. Admins only', isAdmin: false });
-    }
+    // if (!admin) {
+    //   return res.status(403).json({ message: 'Access denied. Admins only', isAdmin: false });
+    // }
 
-    req.user = { uid: userUID }; // Attach user info to req
+    req.user = { uid: userUID, isAdmin: admin ? true : false };
     next(); // ✅ Proceed if admin
   } catch (error) {
     console.error(error);
