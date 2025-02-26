@@ -1,4 +1,4 @@
-const GlampingSite = require("../models/GlampingSite");
+const GlampingSite = require("../models/glampingSite");
 
 // Get all glamping sites
 const  getGlampingSites = async (req, res) => {
