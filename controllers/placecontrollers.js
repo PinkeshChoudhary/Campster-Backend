@@ -51,23 +51,26 @@ const listPlaces = async (req, res) => {
 
 // Like a place
 const likePlace = async (req, res) => {
-  console.info("api het", req.params , req.body)
   const { placeId } = req.params;
   const { userId } = req.body; // Firebase UID from frontend
 
   try {
     const post = await place.findById(placeId);
     if (!post) return res.status(404).json({ message: "post not found" });
-
     if (post.likedBy.includes(userId)) {
       return res.status(400).json({ message: "Already liked" });
     }
 
-    post.likedBy.push(userId);
-    post.likes += 1;
-    await post.save();
+    const updatedPost = await place.findByIdAndUpdate(
+      placeId,
+      { 
+        $push: { likedBy: userId }, 
+        $inc: { likes: 1 } 
+      },
+      { new: true } // Return updated document
+    );
 
-    res.json({ message: "Liked successfully", likes: post.likes });
+    res.json({ message: "Liked successfully", updatedPost });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
