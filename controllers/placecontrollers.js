@@ -50,15 +50,15 @@ const listPlaces = async (req, res) => {
 
 const listPlaceCity = async (req, res) => {
  try {
-    const { location } = req.query;
+    const { city } = req.query;
     console.info("location", location)
     // ✅ Fix: Check if city is missing
-    if (!location || location.trim() === "") {
+    if (!city || city.trim() === "") {
       return res.status(400).json({ error: "location name is required" });
     }
 
     // ✅ Fetch only approved places for the given city
-    const places = await place.find({ approved: true, location });
+    const places = await place.find({ approved: true, location: city });
 
     // ✅ Return an empty array if no places exist
     return res.status(200).json({ places });
