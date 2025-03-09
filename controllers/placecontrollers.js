@@ -61,7 +61,7 @@ const listPlaceCity = async (req, res) => {
     const places = await place.find({approved: true , location: city });
 
     // ✅ Return an empty array if no places exist
-    return res.status(200).json({ places });
+    return res.status(200).json(places);
   } catch (error) {
     console.error("Error fetching places:", error);
     return res.status(500).json({ error: "Internal Server Error" });
