@@ -49,13 +49,22 @@ const listPlaces = async (req, res) => {
 };
 
 const listPlaceCity = async (req, res) => {
-  try {
-    const { location } = req.params;
-    if (!location) return res.status(400).json({ error: "City is required" });
-    const places = await place.find({ approved: true, location });
-    res.status(200).json({places});
+ try {
+    const { location } = req.query;
+
+    // ✅ Fix: Check if city is missing
+    if (!location || location.trim() === "") {
+      return res.status(400).json({ error: "location name is required" });
+    }
+
+    // ✅ Fetch only approved places for the given city
+    const places = await place.find({ approved: true, city });
+
+    // ✅ Return an empty array if no places exist
+    return res.status(200).json({ places });
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching places city places' });
+    console.error("Error fetching places:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
