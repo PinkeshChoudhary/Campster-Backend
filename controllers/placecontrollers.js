@@ -58,7 +58,7 @@ const listPlaceCity = async (req, res) => {
     }
 
     // ✅ Fetch only approved places for the given city
-    const places = await place.find({ approved: true, location: city });
+    const places = await place.find({ approved: true });
 
     // ✅ Return an empty array if no places exist
     return res.status(200).json({ places });
