@@ -51,7 +51,7 @@ const listPlaces = async (req, res) => {
 const listPlaceCity = async (req, res) => {
  try {
     const { location } = req.query;
-
+    console.info("location", location)
     // ✅ Fix: Check if city is missing
     if (!location || location.trim() === "") {
       return res.status(400).json({ error: "location name is required" });
