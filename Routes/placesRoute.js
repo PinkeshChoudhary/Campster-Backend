@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/multerg');
-const { addPlace, listPlaces,  placebyid, likePlace, getComments, addComment, getPostByUserId, getLikes } = require('../controllers/placecontrollers');
+const { addPlace, listPlaces,  placebyid, likePlace, getComments, addComment, getPostByUserId, getLikes, listPlaceCity } = require('../controllers/placecontrollers');
 
 // Add a new post
 router.post('/submit', upload.array('images', 8), addPlace);
 
 // Get all approved posts
 router.get('/', listPlaces);
+router.get('/location', listPlaceCity);
+
 
 router.get('/:id', placebyid);
 

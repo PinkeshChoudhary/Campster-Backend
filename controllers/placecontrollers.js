@@ -48,6 +48,17 @@ const listPlaces = async (req, res) => {
   }
 };
 
+const listPlaceCity = async (req, res) => {
+  try {
+    const { location } = req.params;
+    if (!location) return res.status(400).json({ error: "City is required" });
+    const places = await place.find({ approved: true, location });
+    res.status(200).json({places});
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching places city places' });
+  }
+};
+
 
 // Like a place
 const likePlace = async (req, res) => {
@@ -141,4 +152,4 @@ const getPostByUserId = async (req, res) => {
   }
 };
 
-module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes };
+module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes, listPlaceCity };
