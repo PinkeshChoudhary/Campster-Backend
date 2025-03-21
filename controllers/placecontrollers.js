@@ -52,15 +52,16 @@ const listPlaceCity = async (req, res) => {
  try {
     const { city } = req.query;
     console.info("location", city)
-    // ✅ Fix: Check if city is missing
+    //  Fix: Check if city is missing
     if (!city || city.trim() === "") {
       return res.status(400).json({ error: "location name is required" });
     }
 
-    // ✅ Fetch only approved places for the given city
-    const places = await place.find({approved: true , location: city });
+    //  Fetch only approved places for the given city
+    const places = await place.find({approved: true , location: { $regex: new RegExp(city, "i") } });
+    console.log("Places found:", places); // Debugging
 
-    // ✅ Return an empty array if no places exist
+    //  Return an empty array if no places exist
     return res.status(200).json(places);
   } catch (error) {
     console.error("Error fetching places:", error);
