@@ -21,6 +21,10 @@ const placeSchema = new mongoose.Schema({
     type: [String], 
     required: true,
   },
+  paid: { 
+    type: Boolean, 
+    default: false 
+  },
   approved: { 
     type: Boolean, 
     default: false 
