@@ -12,6 +12,7 @@ const addPlace = async (req, res) => {
       images: imageUrls,
       approved: false,  // Initially not approved
       userId:req.body.userId,
+      paid: req.body.paid,
     });
     await newPlace.save();
     res.status(201).json({ message: 'Place submitted successfully' });
