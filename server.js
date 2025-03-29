@@ -34,7 +34,7 @@ connectDB();
 
 // Middleware
 app.use(express.json({ limit: '50mb' }));
-app.use(cors({ origin: "https://www.campster.in", methods: ["GET", "POST", "PATCH", "PUT", "DELETE"] }));
+app.use(cors({ origin: process.env.CLIENT_URL, methods: ["GET", "POST", "PATCH", "PUT", "DELETE"] }));
 
 // Routes
 app.use("/api", userRoutes);
