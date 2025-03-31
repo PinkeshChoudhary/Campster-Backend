@@ -12,6 +12,7 @@ const bookingRoutes = require("./Routes/bookingRoutes");
 const adminFireRoute = require("./Routes/adminFireRoute");
 const glampingRoute = require("./Routes/glampingRoute");
 const eventRoute = require("./Routes/eventRoute");
+const ticketRoutes = require("./Routes/ticketRoute");
 
 const { setSocket } = require("./controllers/bookingControllers"); // Import setSocket
 // require("./jobs/stockRestore");
@@ -46,6 +47,7 @@ app.use("/api/tents", tentRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/glamping", glampingRoute);
 app.use("/api/events", eventRoute);
+app.use("/api/tickets", ticketRoutes);
 
 io.on("connection", (socket) => {
   console.log(`⚡ New client connected: ${socket.id}`);
