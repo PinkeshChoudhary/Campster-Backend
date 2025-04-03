@@ -23,7 +23,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://campster-six.vercel.app"],
+    origin: [`${process.env.CLIENT_URL}`],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'FETCH', 'PATCH'],
     credentials: true,
   },
