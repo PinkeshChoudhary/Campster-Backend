@@ -31,8 +31,8 @@ const  addEvent = async (req, res) => {
     const imageUrls = req.files.map(file => file.path); 
     console.info("imagrurl", imageUrls );
      // Get image URLs from Cloudinary
-    const { name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets } = req.body;
-    const newEvent = new Event({ name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets, images: imageUrls, });
+    const { name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets, instagramLink, youtubeLink, organizerUID, organizerPhone } = req.body;
+    const newEvent = new Event({ name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets,  instagramLink, youtubeLink, organizerUID, organizerPhone, images: imageUrls, });
     console.info("newEvent", newEvent )
     await newEvent.save();
     res.status(201).json({ message: "Event Upload successful" });
@@ -51,5 +51,24 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-module.exports = { getEvent, addEvent, deleteEvent, getEventbyid,  };
+const  verifiyEvent = async (req, res) => {
+  try {
+    const eventId = req.params.id;
+    const eventverify = await Event.findById(eventId);
+
+    if (!eventverify) {
+      return res.status(404).json({ message: 'event not found' });
+    }
+
+    eventverify.isverified = true;
+    await eventverify.save();
+
+    res.json({ message: 'event verified', eventverify });
+  } catch (error) {
+    console.error('Error verifinf event:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+module.exports = { getEvent, addEvent, deleteEvent, getEventbyid, verifiyEvent  };
 

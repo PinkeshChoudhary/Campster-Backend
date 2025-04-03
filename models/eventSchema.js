@@ -14,6 +14,26 @@ const eventSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  instagramLink: {
+    type: String,
+    required: true
+  },
+  youtubeLink: {
+    type: String,
+    required: true
+  },
+  isverified: {
+    type: Boolean,
+    default: false
+  },
+  organizerPhone: {
+    type: String,
+    required: true
+  },
+  organizerUID: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     required: true
