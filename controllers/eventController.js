@@ -70,5 +70,15 @@ const  verifiyEvent = async (req, res) => {
   }
 };
 
-module.exports = { getEvent, addEvent, deleteEvent, getEventbyid, verifiyEvent  };
+const getCategories = (req, res) => {
+  try {
+    const categories = Event.schema.path("category").enumValues;
+    res.json(categories);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { getEvent, addEvent, deleteEvent, getEventbyid, verifiyEvent, getCategories  };
 
