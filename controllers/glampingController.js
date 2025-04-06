@@ -34,6 +34,7 @@ const  addGlampingSite = async (req, res) => {
     const {
       name,
       description,
+      typeOfStay,
       location,
       pricePerNight,
       amenities,
@@ -47,6 +48,7 @@ const  addGlampingSite = async (req, res) => {
     const newSite = new GlampingSite({
       name,
       description,
+      typeOfStay,
       location,
       pricePerNight,
       amenities: parsedAmenities,
@@ -72,5 +74,16 @@ const deleteGlampingSite = async (req, res) => {
   }
 };
 
-module.exports = { getGlampingSites, addGlampingSite, deleteGlampingSite, glampingsitebyid,  };
+const getTypeOfStay = (req, res) => {
+  try {
+    const stay = GlampingSite.schema.path("typeOfStay").enumValues;
+    res.json(stay);
+  } catch (error) {
+    console.error("Error fetching stay:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+module.exports = { getGlampingSites, addGlampingSite, deleteGlampingSite, glampingsitebyid, getTypeOfStay  };
 

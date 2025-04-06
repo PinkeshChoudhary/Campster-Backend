@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const glampingSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
+  typeOfStay: { 
+    type: String,
+    enum: ['Farm House', 'Resort', 'Tent Stay', 'Villa', 'Dome Tent', 'A-Frame Cabin',],
+    required: true },
   location: { type: String, required: true },
   pricePerNight: { type: Number, required: true },
   images: [{ type: String, required: true }], // Store Cloudinary URLs

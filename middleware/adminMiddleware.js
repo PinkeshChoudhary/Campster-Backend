@@ -3,7 +3,7 @@ const Adminfire = require('../models/adminFire');
 const verifyAdmin = async (req, res, next) => {
   try {
     const userUID = req.query.uid; // ✅ Extract UID from query params
-    console.info("User ID:", userUID);
+    // console.info("User ID:", userUID);
 
     if (!userUID) {
       return res.status(400).json({ message: "UID is required" });

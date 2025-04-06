@@ -14,7 +14,7 @@ cron.schedule("*/20 * * * * *", async () => { // Runs every hour
             toDate: { $lt: now },
            
         });
-        console.info("expiring booking", expiredBookings )
+        // console.info("expiring booking", expiredBookings )
         for (let booking of expiredBookings) {
             // Find the tent associated with the booking
             const tent = await Tent.findById(booking.tentId);
