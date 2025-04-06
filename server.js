@@ -13,6 +13,8 @@ const adminFireRoute = require("./Routes/adminFireRoute");
 const glampingRoute = require("./Routes/glampingRoute");
 const eventRoute = require("./Routes/eventRoute");
 const contactRoute = require("./Routes/contactRoute");
+const communityChatRoute = require("./Routes/communityChatRoute");
+
 
 // const ticketRoutes = require("./Routes/ticketRoute");
 
@@ -50,6 +52,8 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/glamping", glampingRoute);
 app.use("/api/events", eventRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/citychat", communityChatRoute);
+
 // app.use("/api/tickets", ticketRoutes);
 
 io.on("connection", (socket) => {
