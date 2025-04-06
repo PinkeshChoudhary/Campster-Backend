@@ -14,9 +14,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// Check Cloudinary configuration
-console.log('Cloudinary Configuration:', cloudinary.config());
-
 // Set up multer storage with Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,

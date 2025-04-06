@@ -29,11 +29,11 @@ const getEventbyid = async (req, res) => {
 const  addEvent = async (req, res) => {
   try {
     const imageUrls = req.files.map(file => file.path); 
-    console.info("imagrurl", imageUrls );
+    // console.info("imagrurl", imageUrls );
      // Get image URLs from Cloudinary
     const { name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets, instagramLink, youtubeLink, organizerUID, organizerPhone } = req.body;
     const newEvent = new Event({ name, description, location, date, time, organizer, ticketType, price, category, totalTickets, availableTickets,  instagramLink, youtubeLink, organizerUID, organizerPhone, images: imageUrls, });
-    console.info("newEvent", newEvent )
+    // console.info("newEvent", newEvent )
     await newEvent.save();
     res.status(201).json({ message: "Event Upload successful" });
   } catch (error) {

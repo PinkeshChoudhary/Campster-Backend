@@ -29,12 +29,35 @@ const glampingsitebyid = async (req, res) => {
 // Add a new glamping site
 const  addGlampingSite = async (req, res) => {
   try {
-    const imageUrls = req.files.map(file => file.path);  // Get image URLs from Cloudinary
-    const { name, description, location, pricePerNight, amenities } = req.body;
-    const newSite = new GlampingSite({ name, description, location, pricePerNight, amenities, images: imageUrls, });
+    const imageUrls = req.files.map(file => file.path);
+
+    const {
+      name,
+      description,
+      location,
+      pricePerNight,
+      amenities,
+      permissions,
+    } = req.body;
+
+    // Parse JSON strings sent from frontend (Vue sends amenities and permissions as JSON strings)
+    const parsedAmenities = JSON.parse(amenities);
+    const parsedPermissions = JSON.parse(permissions);
+
+    const newSite = new GlampingSite({
+      name,
+      description,
+      location,
+      pricePerNight,
+      amenities: parsedAmenities,
+      permissions: parsedPermissions,
+      images: imageUrls,
+    });
+
     await newSite.save();
     res.status(201).json({ message: "Glamping site added successfully" });
   } catch (error) {
+    console.error("Error adding site:", error);
     res.status(500).json({ message: "Error adding site" });
   }
 };

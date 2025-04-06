@@ -59,7 +59,7 @@ const eventSchema = new mongoose.Schema({
   images: [{ type: String, required: true }],
   category: {
     type: String,
-    enum: ['Music', 'Sports', 'Conference', 'Workshop', 'Festival', 'Other'],
+    enum: ['Music', 'Camping', 'Trekking', 'Stargazing', 'Bonfire Nights', 'Food Festival', 'Wildlife Safari',  'Sports',],
     required: true
   },
   totalTickets: {
