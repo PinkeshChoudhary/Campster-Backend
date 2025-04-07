@@ -2,16 +2,18 @@ const User = require("../models/user.js");
 
  const saveUser = async (req, res) => {
   try {
-    const { uid, name, dob, email, phone } = req.body;
+    const { uid, name, dob, email, phone, gender, avatarUrl } = req.body;
 
     let user = await User.findById(uid);
 
     if (!user) {
-      user = new User({ _id: uid, name, dob, email, phone });
+      user = new User({ _id: uid, name, dob, email, phone, gender });
     } else {
       user.name = name;
       user.dob = dob;
       user.email = email;
+      user.gender = gender;
+      user.avatarUrl = avatarUrl;
     }
 
     await user.save();
