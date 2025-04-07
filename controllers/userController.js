@@ -2,7 +2,7 @@ const User = require("../models/user.js");
 
  const saveUser = async (req, res) => {
   try {
-    const { uid, name, dob, email, phone, gender, avatarUrl } = req.body;
+    const { uid, name, dob, email, phone, gender } = req.body;
 
     let user = await User.findById(uid);
 
@@ -13,7 +13,6 @@ const User = require("../models/user.js");
       user.dob = dob;
       user.email = email;
       user.gender = gender;
-      user.avatarUrl = avatarUrl;
     }
 
     await user.save();
