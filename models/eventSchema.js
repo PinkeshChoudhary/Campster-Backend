@@ -16,11 +16,11 @@ const eventSchema = new mongoose.Schema({
   },
   instagramLink: {
     type: String,
-    required: true
+    required: false
   },
   youtubeLink: {
     type: String,
-    required: true
+    required: false
   },
   isverified: {
     type: Boolean,
