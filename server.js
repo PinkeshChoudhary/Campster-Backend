@@ -14,6 +14,8 @@ const glampingRoute = require("./Routes/glampingRoute");
 const eventRoute = require("./Routes/eventRoute");
 const contactRoute = require("./Routes/contactRoute");
 const communityChatRoute = require("./Routes/communityChatRoute");
+const bingoGameRoute = require("./Routes/bingoRoute");
+
 
 
 // const ticketRoutes = require("./Routes/ticketRoute");
@@ -53,6 +55,8 @@ app.use("/api/glamping", glampingRoute);
 app.use("/api/events", eventRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/citychat", communityChatRoute);
+app.use("/api/bingo", bingoGameRoute);
+
 
 // app.use("/api/tickets", ticketRoutes);
 
