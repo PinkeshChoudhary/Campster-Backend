@@ -15,6 +15,7 @@ const eventRoute = require("./Routes/eventRoute");
 const contactRoute = require("./Routes/contactRoute");
 const communityChatRoute = require("./Routes/communityChatRoute");
 const bingoGameRoute = require("./Routes/bingoRoute");
+const blogRoutes = require('./Routes/blogRoutes')
 
 
 
@@ -56,6 +57,7 @@ app.use("/api/events", eventRoute);
 app.use("/api/contact", contactRoute);
 app.use("/api/citychat", communityChatRoute);
 app.use("/api/bingo", bingoGameRoute);
+app.use('/api/blogs', blogRoutes)
 
 
 // app.use("/api/tickets", ticketRoutes);
