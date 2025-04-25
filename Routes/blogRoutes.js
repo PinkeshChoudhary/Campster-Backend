@@ -20,9 +20,8 @@ router.post('/add', upload.any(), async (req, res) => {
       const { type, content } = block;
 
       if (type === 'image') {
-        const imageFile = req.files.find(f => f.fieldname === `blocks[${index}][file]`);
-        const imageUrl = imageFile ? imageFile.path : '';
-        
+       const imageFile = req.files.find(f => f.fieldname === `blocks[${index}][file]`);
+      const imageUrl = imageFile ? imageFile.path : '';
         return { type: 'image', content: imageUrl };
       } else {
         // For other block types like 'heading', 'text', etc.
