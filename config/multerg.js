@@ -27,8 +27,9 @@ const storage = new CloudinaryStorage({
 // Set up multer with the Cloudinary storage configuration
 const upload = multer({ 
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 } // 50MB file size limit
- });
+  limits: { fileSize: 200 * 1024 * 1024 } // 200MB file size limit
+});
+
 
 // Export the upload function to be used in routes
 module.exports = upload;

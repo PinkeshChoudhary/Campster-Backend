@@ -42,7 +42,7 @@ setSocket(io);
 connectDB();
 
 // Middleware
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: '200mb' }));
 app.use(cors({ origin: `${process.env.CLIENT_URL}`, methods: ["GET", "POST", "PATCH", "PUT", "DELETE"] }));
 
 // Routes
