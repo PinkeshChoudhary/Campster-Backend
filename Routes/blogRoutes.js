@@ -5,10 +5,10 @@ const upload = require('../config/multerg');
 const router = express.Router()
 
 // Prepare up to N images (extend as needed)
-const fieldArray = Array.from({ length: 10 }, (_, i) => ({ name: `blocks[${i}][file]` }));
+// const fieldArray = Array.from({ length: 10 }, (_, i) => ({ name: `blocks[${i}][file]` }));
 
 // Route to create a new blog
-router.post('/add', upload.fields(fieldArray), async (req, res) => {
+router.post('/add', upload.any(), async (req, res) => {
   console.log('🔑 Request body:', req.body);
   console.log('📂 Request files:', req.files);
 
