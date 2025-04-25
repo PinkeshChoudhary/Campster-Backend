@@ -1,4 +1,5 @@
 // backend/routes/blogRoutes.js
+require('events').EventEmitter.defaultMaxListeners = 30; // or any higher number
 const express = require('express')
 const Blog = require('../models/blog')
 const upload = require('../config/multerg');
@@ -13,19 +14,21 @@ router.post('/add', upload.any(), async (req, res) => {
   console.log('📂 Request files:', req.files);
 
   try {
-    const { title, blocks } = req.body;
+    const { title } = req.body;
+    const blocks = req.body.blocks;
 
     // If blocks is an array, process each block directly
     const processedBlocks = blocks.map((block, index) => {
-      const { type, content } = block;
-
-      if (type === 'image') {
-       const imageFile = req.files.find(f => f.fieldname === `blocks[${index}][file]`);
-      const imageUrl = imageFile ? imageFile.path : '';
+      if (block.type === 'image') {
+        const fileField = `blocks[${index}][file]`;
+        const matchedFile = req.files.find(f => f.fieldname === fileField);
+        const imageUrl = matchedFile ? matchedFile.path : '';
         return { type: 'image', content: imageUrl };
       } else {
-        // For other block types like 'heading', 'text', etc.
-        return { type, content };
+        return {
+          type: block.type,
+          content: block.content
+        };
       }
     });
 
