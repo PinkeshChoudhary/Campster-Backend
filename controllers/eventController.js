@@ -1,8 +1,8 @@
 const Event = require("../models/eventSchema");
 
-const  getEvent = async (req, res) => {
+const getEvent = async (req, res) => {
   try {
-    const events = await Event.find();
+    const events = await Event.find().sort({ createdAt: -1 }); // Newest first
     res.json(events);
   } catch (error) {
     res.status(500).json({ message: "Server error" });
