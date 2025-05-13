@@ -3,7 +3,7 @@ const CityChat = require('../models/CommunityChat.js')
 // Get all messages in a city
  const getMessagesByCity = async (req, res) => {
   try {
-    const messages = await CityChat.find({ city: req.params.city }).sort({ createdAt: 1 })
+    const messages = await CityChat.find({ city: req.params.city }).sort({ createdAt: -1 })
     res.json(messages)
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch messages' })
