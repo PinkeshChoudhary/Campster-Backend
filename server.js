@@ -17,6 +17,8 @@ const communityChatRoute = require("./Routes/communityChatRoute");
 const bingoGameRoute = require("./Routes/bingoRoute");
 const blogRoutes = require('./Routes/blogRoutes')
 const generativeRoute = require('./Routes/generativeRoute')
+const audioRoute = require('./Routes/audioRoute')
+
 
 
 
@@ -61,6 +63,8 @@ app.use("/api/citychat", communityChatRoute);
 app.use("/api/bingo", bingoGameRoute);
 app.use('/api/blogs', blogRoutes)
 app.use('/api/travel-plan', generativeRoute)
+app.use('/api/audio-stories', audioRoute)
+
 
 
 

@@ -24,12 +24,29 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// Separate storage for audio files
+const audioStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'campster-audio-stories',
+    resource_type: 'video', // Needed for audio files
+    allowed_formats: ['mp3', 'wav', 'm4a'],
+    public_id: (req, file) => `audio-${Date.now()}-${file.originalname}`,
+  },
+});
+
 // Set up multer with the Cloudinary storage configuration
 const upload = multer({ 
   storage: storage,
   limits: { fileSize: 200 * 1024 * 1024 } // 200MB file size limit
 });
 
+const audioUpload = multer({
+  storage: audioStorage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max for audio
+});
+
 
 // Export the upload function to be used in routes
 module.exports = upload;
+module.exports = audioUpload;
