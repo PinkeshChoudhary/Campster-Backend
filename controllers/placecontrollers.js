@@ -8,6 +8,7 @@ const addPlace = async (req, res) => {
       destination: req.body.destination,
       description: req.body.description,
       location: req.body.location,
+      influncerInstaGramProfile:req.body.instagramProfile,
       locationCoordinates: req.body.locationCoordinates,
       images: imageUrls,
       approved: false,  // Initially not approved

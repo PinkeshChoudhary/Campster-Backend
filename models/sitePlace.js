@@ -17,6 +17,10 @@ const placeSchema = new mongoose.Schema({
     type: String, 
     required: true,
   },
+  influncerInstaGramProfile:{
+ type: String,
+    required: false,
+  },
   locationCoordinates: {
     type: String, 
     required: true,
