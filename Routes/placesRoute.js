@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const upload = require('../config/multerg');
-const { addPlace, listPlaces,  placebyid, likePlace, getComments, addComment, getPostByUserId, getLikes, listPlaceCity } = require('../controllers/placecontrollers');
+const todayvibeUpload = require('../config/multerg');
+const { addPlace, listPlaces,  placebyid, likePlace, getComments, addComment, getPostByUserId, getLikes, listPlaceCity, uploadTodaysVibe } = require('../controllers/placecontrollers');
 
 // Add a new post
 router.post('/submit', upload.array('images', 8), addPlace);
@@ -20,5 +21,8 @@ router.post('/:id/comments', addComment);
 router.get('/:id/comments', getComments);
 
 router.get("/user/:userId", getPostByUserId);
+
+router.post('/:id/todays-vibe', todayvibeUpload.single('media'), uploadTodaysVibe);
+
 
 module.exports = router;

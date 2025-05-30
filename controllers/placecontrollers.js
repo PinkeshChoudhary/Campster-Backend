@@ -164,5 +164,31 @@ const getPostByUserId = async (req, res) => {
     res.status(500).json({ message: "Server error." });
   }
 };
+const uploadTodaysVibe = async (req, res) => {
+  const placeId = req.params.id;
+  // const { uid } = req.user; // from Firebase auth
+  const file = req.file;
+  const fileUrl = req.file.path;
 
-module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes, listPlaceCity };
+console.info("file", file)
+console.info("placeId", placeId)
+
+  try {
+    const Places = await place.findById(placeId);
+console.info("place", Places)
+    Places.todaysVibe = {
+      mediaUrl: fileUrl,
+      mediaType: file.mimetype.startsWith("video") ? "video" : "image",
+      uploadedAt: new Date(),
+      uploadedBy: "uid",
+    };
+console.info('every thig ok', Places)
+    await Places.save();
+    res.status(200).json(Places.todaysVibe);
+  } catch (err) {
+    res.status(500).json({ message: "Upload failed." });
+  }
+};
+
+
+module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes, listPlaceCity, uploadTodaysVibe };

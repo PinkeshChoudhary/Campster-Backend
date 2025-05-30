@@ -18,13 +18,19 @@ const placeSchema = new mongoose.Schema({
     required: true,
   },
   influncerInstaGramProfile:{
- type: String,
+    type: String,
     required: false,
   },
   locationCoordinates: {
     type: String, 
     required: true,
   },
+  todaysVibe: {
+  mediaUrl: String,
+  mediaType: String, // 'image' or 'video'
+  uploadedAt: Date,
+  uploadedBy: String, // Firebase UID or name
+},
   images: {
     type: [String], 
     required: true,

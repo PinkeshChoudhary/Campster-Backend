@@ -46,7 +46,14 @@ const audioUpload = multer({
   limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max for audio
 });
 
+const todayvibeUpload = multer({
+  storage: storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max for audio
+});
+
 
 // Export the upload function to be used in routes
 module.exports = upload;
 module.exports = audioUpload;
+module.exports = todayvibeUpload;
+
