@@ -26,7 +26,6 @@ const audioRoute = require('./Routes/audioRoute')
 // const ticketRoutes = require("./Routes/ticketRoute");
 
 const { setSocket } = require("./controllers/bookingControllers"); // Import setSocket
-const { startTodaysVibeCleanupJob } = require("./jobs/todaysVibeCleanup"); // Import cleanup job
 // require("./jobs/stockRestore");
 
 
@@ -82,7 +81,4 @@ io.on("connection", (socket) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  
-  // Start the todaysVibe cleanup job
-  startTodaysVibeCleanupJob();
 });

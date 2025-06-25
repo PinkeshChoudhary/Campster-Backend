@@ -28,11 +28,7 @@ const placeSchema = new mongoose.Schema({
   todaysVibe: {
   mediaUrl: String,
   mediaType: String, // 'image' or 'video'
-  uploadedAt: {
-    type: Date,
-    default: Date.now,
-    expires: 21600 // 6 hours in seconds (6 * 60 * 60)
-  },
+  uploadedAt: Date,
   uploadedBy: String, // Firebase UID or name
 },
   images: {

@@ -1,5 +1,4 @@
 const place = require('../models/sitePlace');
-const { cleanupExpiredTodaysVibe, getActiveTodaysVibe } = require('../jobs/todaysVibeCleanup');
 
 // Add a new place
 const addPlace = async (req, res) => {
@@ -165,152 +164,31 @@ const getPostByUserId = async (req, res) => {
     res.status(500).json({ message: "Server error." });
   }
 };
-
-// Middleware to check and clean expired todaysVibe before fetching
-const checkExpiredTodaysVibe = async (placeData) => {
-  if (placeData.todaysVibe && placeData.todaysVibe.uploadedAt) {
-    const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
-    if (placeData.todaysVibe.uploadedAt < sixHoursAgo) {
-      // Remove expired todaysVibe
-      placeData.todaysVibe = undefined;
-    }
-  }
-  return placeData;
-};
-
 const uploadTodaysVibe = async (req, res) => {
   const placeId = req.params.id;
-  const { userId } = req.body; // Get userId from request body
+  // const { uid } = req.user; // from Firebase auth
   const file = req.file;
-  
-  if (!file) {
-    return res.status(400).json({ message: "No file uploaded." });
-  }
-  
   const fileUrl = req.file.path;
 
-  console.info("file", file);
-  console.info("placeId", placeId);
+console.info("file", file)
+console.info("placeId", placeId)
 
   try {
     const Places = await place.findById(placeId);
-    
-    if (!Places) {
-      return res.status(404).json({ message: "Place not found." });
-    }
-
-    // Check if there's already a todaysVibe that's not expired
-    if (Places.todaysVibe && Places.todaysVibe.uploadedAt) {
-      const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
-      if (Places.todaysVibe.uploadedAt >= sixHoursAgo) {
-        return res.status(400).json({
-          message: "TodaysVibe already exists and hasn't expired yet.",
-          expiresAt: new Date(Places.todaysVibe.uploadedAt.getTime() + 6 * 60 * 60 * 1000)
-        });
-      }
-    }
-
+console.info("place", Places)
     Places.todaysVibe = {
       mediaUrl: fileUrl,
       mediaType: file.mimetype.startsWith("video") ? "video" : "image",
       uploadedAt: new Date(),
-      uploadedBy: userId || "anonymous",
+      uploadedBy: "uid",
     };
-    
+console.info('every thig ok', Places)
     await Places.save();
-    
-    res.status(200).json({
-      message: "TodaysVibe uploaded successfully!",
-      todaysVibe: Places.todaysVibe,
-      expiresAt: new Date(Places.todaysVibe.uploadedAt.getTime() + 6 * 60 * 60 * 1000)
-    });
+    res.status(200).json(Places.todaysVibe);
   } catch (err) {
-    console.error("Upload error:", err);
     res.status(500).json({ message: "Upload failed." });
   }
 };
 
-// Get all places with active (non-expired) todaysVibe
-const getActiveTodaysVibes = async (req, res) => {
-  try {
-    const activePlaces = await getActiveTodaysVibe();
-    res.status(200).json({
-      count: activePlaces.length,
-      places: activePlaces
-    });
-  } catch (error) {
-    console.error("Error fetching active todaysVibes:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
-// Manual cleanup endpoint (for admin use)
-const manualCleanupTodaysVibe = async (req, res) => {
-  try {
-    const result = await cleanupExpiredTodaysVibe();
-    res.status(200).json({
-      message: "Cleanup completed successfully",
-      modifiedCount: result.modifiedCount
-    });
-  } catch (error) {
-    console.error("Manual cleanup error:", error);
-    res.status(500).json({ message: "Cleanup failed" });
-  }
-};
-
-// Get todaysVibe for a specific place (with expiry check)
-const getTodaysVibe = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const Places = await place.findById(id);
-    
-    if (!Places) {
-      return res.status(404).json({ message: "Place not found" });
-    }
-
-    // Check if todaysVibe exists and is not expired
-    if (Places.todaysVibe && Places.todaysVibe.uploadedAt) {
-      const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
-      if (Places.todaysVibe.uploadedAt < sixHoursAgo) {
-        // Remove expired todaysVibe
-        Places.todaysVibe = undefined;
-        await Places.save();
-        return res.status(404).json({ message: "No active todaysVibe found" });
-      }
-      
-      // Return active todaysVibe with expiry info
-      const expiresAt = new Date(Places.todaysVibe.uploadedAt.getTime() + 6 * 60 * 60 * 1000);
-      const timeLeft = expiresAt - new Date();
-      
-      res.status(200).json({
-        todaysVibe: Places.todaysVibe,
-        expiresAt,
-        timeLeftMs: timeLeft,
-        timeLeftHours: Math.floor(timeLeft / (1000 * 60 * 60)),
-        timeLeftMinutes: Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
-      });
-    } else {
-      res.status(404).json({ message: "No active todaysVibe found" });
-    }
-  } catch (error) {
-    console.error("Error fetching todaysVibe:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-module.exports = {
-  addPlace,
-  listPlaces,
-  placebyid,
-  likePlace,
-  addComment,
-  getComments,
-  getPostByUserId,
-  getLikes,
-  listPlaceCity,
-  uploadTodaysVibe,
-  getActiveTodaysVibes,
-  manualCleanupTodaysVibe,
-  getTodaysVibe,
-  checkExpiredTodaysVibe
-};
+module.exports = { addPlace, listPlaces, placebyid, likePlace, addComment, getComments, getPostByUserId, getLikes, listPlaceCity, uploadTodaysVibe };
