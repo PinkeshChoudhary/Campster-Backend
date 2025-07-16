@@ -32,8 +32,12 @@ const placeSchema = new mongoose.Schema({
   uploadedBy: String, // Firebase UID or name
 },
   images: {
-    type: [String], 
+    type: [String],
     required: true,
+  },
+  audioUrl: {
+    type: String,
+    required: false,
   },
   paid: { 
     type: Boolean, 

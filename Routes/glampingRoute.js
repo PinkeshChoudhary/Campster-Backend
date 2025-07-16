@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getGlampingSites, addGlampingSite, deleteGlampingSite, glampingsitebyid, getTypeOfStay } = require("../controllers/glampingController");
-const upload = require("../config/multerg");
+const { upload } = require("../config/multerg");
 
 // Get all glamping sites
 router.get("/", getGlampingSites);

@@ -2,7 +2,7 @@
 require('events').EventEmitter.defaultMaxListeners = 30; // or any higher number
 const express = require('express')
 const Blog = require('../models/blog')
-const upload = require('../config/multerg');
+const { upload } = require('../config/multerg');
 const router = express.Router()
 
 // Prepare up to N images (extend as needed)

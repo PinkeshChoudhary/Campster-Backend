@@ -28,7 +28,7 @@ const storage = new CloudinaryStorage({
 const audioStorage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'campster-audio-stories',
+    folder: 'campster-audio',
     resource_type: 'video', // Needed for audio files
     allowed_formats: ['mp3', 'wav', 'm4a'],
     public_id: (req, file) => `audio-${Date.now()}-${file.originalname}`,
@@ -52,8 +52,10 @@ const todayvibeUpload = multer({
 });
 
 
-// Export the upload function to be used in routes
-module.exports = upload;
-module.exports = audioUpload;
-module.exports = todayvibeUpload;
+// Export the upload functions to be used in routes
+module.exports = {
+  upload,
+  audioUpload,
+  todayvibeUpload
+};
 

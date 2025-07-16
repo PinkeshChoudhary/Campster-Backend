@@ -3,23 +3,31 @@ const place = require('../models/sitePlace');
 // Add a new place
 const addPlace = async (req, res) => {
   try {
-      const imageUrls = req.files.map(file => file.path);  // Get image URLs from Cloudinary
+    // Handle images from req.files.images (array of files)
+    const imageUrls = req.files && req.files.images ? req.files.images.map(file => file.path) : [];
+    
+    // Handle audio from req.files.audio (single file in array)
+    const audioUrl = req.files && req.files.audio && req.files.audio[0] ? req.files.audio[0].path : null;
+    
     const newPlace = new place({
       destination: req.body.destination,
       description: req.body.description,
       location: req.body.location,
-      influncerInstaGramProfile:req.body.instagramProfile,
+      influncerInstaGramProfile: req.body.instagramProfile,
       locationCoordinates: req.body.locationCoordinates,
       images: imageUrls,
+      audioUrl: audioUrl,
       approved: false,  // Initially not approved
-      userId:req.body.userId,
+      userId: req.body.userId,
       paid: req.body.paid,
       typeOfPlace: req.body.typeOfPlace,
     });
+    
     await newPlace.save();
-    res.status(201).json({ message: 'Place submitted successfully' });
+    res.status(201).json({ message: 'Place submitted successfully', place: newPlace });
   } catch (error) {
-    res.status(500).json({ error: 'Error submitting place' });
+    console.error('Error submitting place:', error);
+    res.status(500).json({ error: 'Error submitting place', details: error.message });
   }
 };
 

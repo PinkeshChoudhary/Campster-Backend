@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../config/multerg');
-const todayvibeUpload = require('../config/multerg');
+const { upload, todayvibeUpload, audioUpload } = require('../config/multerg');
 const { addPlace, listPlaces,  placebyid, likePlace, getComments, addComment, getPostByUserId, getLikes, listPlaceCity, uploadTodaysVibe } = require('../controllers/placecontrollers');
 
 // Add a new post
-router.post('/submit', upload.array('images', 8), addPlace);
+router.post('/submit', upload.fields([
+  { name: 'audio', maxCount: 1 },
+  { name: 'images', maxCount: 8 }
+]), addPlace);
 
 // Get all approved posts
 router.get('/', listPlaces);

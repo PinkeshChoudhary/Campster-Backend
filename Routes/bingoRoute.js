@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require('../config/multerg');
+const { upload } = require('../config/multerg');
 const {
   getAllGames,
   getGameById,

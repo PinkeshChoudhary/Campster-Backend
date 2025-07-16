@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const audioUpload = require('../config/multerg');
+const { audioUpload } = require('../config/multerg');
 
 const {
   uploadAudioStory,
