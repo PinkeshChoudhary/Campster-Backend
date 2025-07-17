@@ -1,33 +1,72 @@
 const place = require('../models/sitePlace');
 
-// Add a new place
+// Add a new place or edit existing place
 const addPlace = async (req, res) => {
   try {
+    // Check if this is an edit operation
+    const isEdit = req.body.isEdit === 'true';
+    const placeId = req.body.placeId;
+
     // Handle images from req.files.images (array of files)
     const imageUrls = req.files && req.files.images ? req.files.images.map(file => file.path) : [];
     
     // Handle audio from req.files.audio (single file in array)
     const audioUrl = req.files && req.files.audio && req.files.audio[0] ? req.files.audio[0].path : null;
     
-    const newPlace = new place({
+    // Prepare the place data
+    const placeData = {
       destination: req.body.destination,
       description: req.body.description,
       location: req.body.location,
       influncerInstaGramProfile: req.body.instagramProfile,
       locationCoordinates: req.body.locationCoordinates,
-      images: imageUrls,
-      audioUrl: audioUrl,
-      approved: false,  // Initially not approved
       userId: req.body.userId,
       paid: req.body.paid,
       typeOfPlace: req.body.typeOfPlace,
-    });
-    
-    await newPlace.save();
-    res.status(201).json({ message: 'Place submitted successfully', place: newPlace });
+    };
+
+    // Only update images and audio if new files are provided
+    if (imageUrls.length > 0) {
+      placeData.images = imageUrls;
+    }
+    if (audioUrl) {
+      placeData.audioUrl = audioUrl;
+    }
+
+    if (isEdit && placeId) {
+      // Edit existing place
+      const existingPlace = await place.findById(placeId);
+      
+      if (!existingPlace) {
+        return res.status(404).json({ error: 'Place not found' });
+      }
+
+      // Check if the user owns this place (optional security check)
+      if (existingPlace.userId !== req.body.userId) {
+        return res.status(403).json({ error: 'Unauthorized to edit this place' });
+      }
+
+      // Update the existing place
+      const updatedPlace = await place.findByIdAndUpdate(
+        placeId,
+        placeData,
+        { new: true, runValidators: true }
+      );
+
+      res.status(200).json({ message: 'Place updated successfully', place: updatedPlace });
+    } else {
+      // Create new place
+      placeData.approved = false; // Initially not approved for new places
+      placeData.images = imageUrls; // Required for new places
+      
+      const newPlace = new place(placeData);
+      await newPlace.save();
+      
+      res.status(201).json({ message: 'Place submitted successfully', place: newPlace });
+    }
   } catch (error) {
-    console.error('Error submitting place:', error);
-    res.status(500).json({ error: 'Error submitting place', details: error.message });
+    console.error('Error submitting/updating place:', error);
+    res.status(500).json({ error: 'Error submitting/updating place', details: error.message });
   }
 };
 
