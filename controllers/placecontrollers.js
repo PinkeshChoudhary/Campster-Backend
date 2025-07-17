@@ -27,7 +27,18 @@ const addPlace = async (req, res) => {
 
     // Only update images and audio if new files are provided
     if (imageUrls.length > 0) {
-      placeData.images = imageUrls;
+      if (isEdit && placeId) {
+        // For edits: append new images to existing ones
+        const existingPlace = await place.findById(placeId);
+        if (existingPlace && existingPlace.images) {
+          placeData.images = [...existingPlace.images, ...imageUrls];
+        } else {
+          placeData.images = imageUrls;
+        }
+      } else {
+        // For new places: use the provided images
+        placeData.images = imageUrls;
+      }
     }
     if (audioUrl) {
       placeData.audioUrl = audioUrl;
