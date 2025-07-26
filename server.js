@@ -33,7 +33,7 @@ connectDB();
 
 // Middleware
 app.use(express.json({ limit: '200mb' }));
-app.use(cors({ origin: `${process.env.CLIENT_URL}`, methods: ["GET", "POST", "PATCH", "PUT", "DELETE"] }));
+app.use(cors({ origin: `${process.env.CLIENT_URL}`, methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "FETCH"] }));
 
 // Routes
 app.use("/api", userRoutes);
