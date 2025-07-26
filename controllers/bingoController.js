@@ -187,7 +187,7 @@ const verifyTask = async (req, res) => {
       game.chat.push(newMessage);
       await game.save();
   
-      res.status(201).json(newMessage); // return saved message
+      res.status(201).json(newMessage); // return saved mess
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
